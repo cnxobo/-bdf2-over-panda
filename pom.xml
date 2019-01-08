@@ -18,5 +18,10 @@
       <version>5.0.3.RELEASE</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.malagu.panda</groupId>
+      <artifactId>panda-dbconsole</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

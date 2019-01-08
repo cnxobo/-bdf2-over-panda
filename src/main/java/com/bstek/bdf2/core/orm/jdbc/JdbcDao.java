@@ -5,9 +5,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.dao.DataAccessException;
@@ -15,10 +14,9 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import com.bstek.bdf2.core.orm.AbstractDao;
 import com.bstek.bdf2.core.orm.DataSourceRepository;
-import com.bstek.bdf2.core.orm.jdbc.dialect.IDialect;
+import org.malagu.panda.dbconsole.jdbc.dialect.IDialect;
 import com.bstek.dorado.data.provider.Page;
 
 /**
@@ -81,12 +79,6 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
   @SuppressWarnings({"unchecked", "rawtypes"})
   protected void pagingQuery(Page<?> page, String sql, Object parameters[], String dataSourceName,
       RowMapper<?> mapper) {
-    JdbcTemplate jdbcTemplate = null;
-    if (dataSourceName == null) {
-      jdbcTemplate = this.getJdbcTemplate();
-    } else {
-      jdbcTemplate = this.getJdbcTemplate(dataSourceName);
-    }
     IDialect dialect = getDialect(jdbcTemplate);
     if (dialect == null) {
       throw new RuntimeException("无法找到与当前数据连接匹配的数据库方言类");
@@ -113,20 +105,18 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
   @SuppressWarnings({"unchecked", "rawtypes"})
   protected void pagingQuery(Page<?> page, String sql, String dataSourceName,
       Map<String, Object> parameters, RowMapper<?> mapper) {
-    NamedParameterJdbcTemplate namedjdbcTemplate =
-        this.getNamedParameterJdbcTemplate(dataSourceName);
-    String querySql = this.getDialect(this.getJdbcTemplate(dataSourceName)).getPaginationSql(sql,
+    String querySql = this.getDialect(jdbcTemplate).getPaginationSql(sql,
         page.getPageNo(), page.getPageSize());
     String countSql = "select count(*) from (" + sql + ") sub_table_alias_";
     if (parameters != null) {
       if (mapper == null) {
-        page.setEntities((List) namedjdbcTemplate.queryForList(querySql, parameters));
+        page.setEntities((List) namedParameterJdbcTemplate.queryForList(querySql, parameters));
       } else {
-        page.setEntities((List) namedjdbcTemplate.query(querySql, parameters, mapper));
+        page.setEntities((List) namedParameterJdbcTemplate.query(querySql, parameters, mapper));
       }
-      page.setEntityCount(namedjdbcTemplate.queryForObject(countSql, parameters, Integer.class));
+      page.setEntityCount(
+          namedParameterJdbcTemplate.queryForObject(countSql, parameters, Integer.class));
     } else {
-      JdbcTemplate jdbcTemplate = this.getJdbcTemplate(dataSourceName);
       if (mapper == null) {
         page.setEntities((List) jdbcTemplate.queryForList(querySql));
       } else {
@@ -136,45 +126,7 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
     }
   }
 
-  public JdbcTemplate getJdbcTemplate() {
-    String currentDataSourceName = this.getDataSourceName(null);
-    if (currentDataSourceName == null) {
-      return this.dataSourceRepository.getDefaultJdbcTemplate();
-    } else {
-      Map<String, JdbcTemplate> map = this.dataSourceRepository.getJdbcTemplateMap();
-      if (map.containsKey(currentDataSourceName)) {
-        return map.get(currentDataSourceName);
-      } else {
-        return this.dataSourceRepository.getDefaultJdbcTemplate();
-      }
-    }
-  }
 
-  public JdbcTemplate getJdbcTemplate(String dataSourceName) {
-    if (dataSourceName == null) {
-      return this.dataSourceRepository.getDefaultJdbcTemplate();
-    } else {
-      Map<String, JdbcTemplate> map = this.dataSourceRepository.getJdbcTemplateMap();
-      if (map.containsKey(dataSourceName)) {
-        return map.get(dataSourceName);
-      } else {
-        return this.dataSourceRepository.getDefaultJdbcTemplate();
-      }
-    }
-  }
-
-  public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
-    String currentDataSourceName = this.getDataSourceName(null);
-    return this.getNamedParameterJdbcTemplate(currentDataSourceName);
-  }
-
-  public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(String dataSourceName) {
-    if (StringUtils.isNotEmpty(dataSourceName)) {
-      return this.dataSourceRepository.getNamedParameterJdbcTemplate(dataSourceName);
-    } else {
-      return this.dataSourceRepository.getDefaultNamedParameterJdbcTemplate();
-    }
-  }
 
   protected IDialect getDialect(JdbcTemplate jdbcTemplate) {
     return jdbcTemplate.execute(new ConnectionCallback<IDialect>() {
@@ -212,4 +164,10 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
     }
     this.dialects = applicationContext.getBeansOfType(IDialect.class).values();
   }
+
+  @Autowired
+  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 }
