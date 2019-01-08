@@ -27,7 +27,7 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
   private ApplicationContext applicationContext;
   private DataSourceRepository dataSourceRepository;
   private Collection<IDialect> dialects;
-
+  
   protected void pagingQuery(Page<?> page, String sql, String dataSourceName, RowMapper<?> mapper,
       Map<String, Object> parameters) {
     this.pagingQuery(page, sql, dataSourceName, parameters, mapper);
@@ -170,4 +170,21 @@ public abstract class JdbcDao extends AbstractDao implements ApplicationContextA
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
+
+  public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
+    return namedParameterJdbcTemplate;
+  }
+
+  public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+  }
+
+  public JdbcTemplate getJdbcTemplate() {
+    return jdbcTemplate;
+  }
+
+  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+  
 }

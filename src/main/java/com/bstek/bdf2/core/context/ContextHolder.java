@@ -10,13 +10,17 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
+import org.malagu.panda.security.ContextUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.model.DefaultUser;
 import com.bstek.dorado.core.Configure;
+import com.bstek.dorado.web.DoradoContext;
 
 
 public class ContextHolder implements ApplicationContextAware {
@@ -105,7 +109,7 @@ public class ContextHolder implements ApplicationContextAware {
   }
 
   public static HttpServletRequest getRequest() {
-    return requestThreadLocal.get();
+    return DoradoContext.getAttachedRequest();
   }
 
   public static HttpServletResponse getResponse() {
@@ -126,11 +130,8 @@ public class ContextHolder implements ApplicationContextAware {
   }
 
   public static IUser getLoginUser() {
-    HttpSession session = getHttpSession();
-    if (session == null) {
-      return null;
-    }
-    return (IUser) session.getAttribute(LOGIN_USER_SESSION_KEY);
+    ContextUtils.getLoginUser();
+    return new DefaultUser();
   }
 
   public static String getLoginUserName() {
