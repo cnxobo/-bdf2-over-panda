@@ -16,8 +16,6 @@ import com.bstek.bdf2.core.business.IUser;
  * @since 2013-1-22
  * @author Jacky.gao
  */
-@Entity
-@Table(name = "BDF2_POSITION")
 public class DefaultPosition implements IPosition, java.io.Serializable {
   private static final long serialVersionUID = 1372378627072030656L;
   @Id

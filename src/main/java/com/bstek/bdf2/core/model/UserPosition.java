@@ -9,8 +9,6 @@ import javax.persistence.Table;
  * @since 2013-1-26
  * @author Jacky.gao
  */
-@Entity
-@Table(name = "BDF2_USER_POSITION")
 public class UserPosition implements java.io.Serializable {
   private static final long serialVersionUID = -3018697241446594713L;
   @Id

@@ -10,8 +10,6 @@ import com.bstek.bdf2.core.business.IDept;
 import com.bstek.bdf2.core.business.IPosition;
 import com.bstek.bdf2.core.business.IUser;
 
-@Entity
-@Table(name = "BDF2_GROUP_MEMBER")
 public class GroupMember implements java.io.Serializable {
   private static final long serialVersionUID = -557520158476738610L;
 

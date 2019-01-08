@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "BDF2_ROLE_RESOURCE")
 public class RoleResource implements java.io.Serializable {
   private static final long serialVersionUID = 2788321797016604980L;
   @Id

@@ -16,8 +16,6 @@ import com.bstek.bdf2.core.business.IUser;
  * @since 2013-1-22
  * @author Jacky.gao
  */
-@Entity
-@Table(name = "BDF2_DEPT")
 public class DefaultDept implements IDept, java.io.Serializable {
   private static final long serialVersionUID = -7669420244144806105L;
   @Id

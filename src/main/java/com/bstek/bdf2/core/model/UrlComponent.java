@@ -19,8 +19,6 @@ import org.hibernate.annotations.FetchMode;
  * @author Jacky.gao
  * @since 2013-2-18
  */
-@Entity
-@Table(name = "BDF2_URL_COMPONENT")
 public class UrlComponent implements java.io.Serializable {
   private static final long serialVersionUID = 1784126739852822273L;
 

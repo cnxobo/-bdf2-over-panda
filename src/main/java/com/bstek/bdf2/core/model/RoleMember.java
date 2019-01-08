@@ -23,8 +23,6 @@ import com.bstek.bdf2.core.business.IUser;
  * @since 2013-1-24
  * @author Jacky.gao
  */
-@Entity
-@Table(name = "BDF2_ROLE_MEMBER")
 public class RoleMember implements java.io.Serializable {
   private static final long serialVersionUID = 4592886341415257236L;
 

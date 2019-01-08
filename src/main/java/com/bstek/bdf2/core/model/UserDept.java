@@ -9,8 +9,6 @@ import javax.persistence.Table;
  * @since 2013-1-26
  * @author Jacky.gao
  */
-@Entity
-@Table(name = "BDF2_USER_DEPT")
 public class UserDept implements java.io.Serializable {
   private static final long serialVersionUID = 4775581196397644523L;
   @Id

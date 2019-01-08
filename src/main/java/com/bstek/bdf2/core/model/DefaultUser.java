@@ -18,8 +18,6 @@ import com.bstek.bdf2.core.business.IPosition;
  * @author Jacky
  *         默认用户实现 类
  */
-@Entity
-@Table(name = "BDF2_USER")
 public class DefaultUser extends AbstractUser implements java.io.Serializable {
   private static final long serialVersionUID = -1363793377621174845L;
   @Id
