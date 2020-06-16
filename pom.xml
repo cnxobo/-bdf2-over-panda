@@ -6,11 +6,6 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <dependencies>
-    <dependency>
-      <groupId>org.malagu.panda</groupId>
-      <artifactId>panda-coke</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
     
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -27,6 +22,11 @@
     	<groupId>org.malagu.panda</groupId>
     	<artifactId>panda-security</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.malagu.panda</groupId>
+      <artifactId>panda-dorado</artifactId>
+      <version>0.0.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
